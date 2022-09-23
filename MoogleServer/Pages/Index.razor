@@ -1,0 +1,52 @@
+﻿@page "/"
+<PageTitle>Moogle!</PageTitle>
+
+<head>
+    <link rel="ico" href="/home/osvaldo/CC111/Proyecto/moogle-2021-main/MoogleServer/wwwroot/favico.ico">
+</head>
+
+<h1 class="Titulo_pagina">Moogle!</h1>
+
+    <div class="container">
+        <input class="input_style" @bind="query" placeholder="Introduzca su búsqueda" @onkeyup="@onenter">
+        <button href="#" class="button" @onclick="RunQuery">🔍</button>
+    </div>
+    
+
+@if (!string.IsNullOrEmpty(result.Suggestion)) {
+    <div class="suggestion">
+        <p>¿Quisiste decir <strong><a href="#" @onclick="FixQuery"> @result.Suggestion</a></strong>?</p>
+    </div>
+}
+
+<ul class="results">
+@foreach (var item in result.Items()) {
+    <li>
+        <div class="item">
+            <p class="title">@item.Title</p>
+            <p>... @item.Snippet ...</p>
+        </div>
+    </li>
+}
+</ul>
+
+@code {
+    private string query = "";
+    private SearchResult result = new SearchResult();
+
+    private void RunQuery() {
+        result = Moogle.Query(query);
+    }
+
+    private void onenter(KeyboardEventArgs Event)
+    {
+        if(Event.Code == "Enter")RunQuery();
+    }
+    private void FixQuery()
+    {
+        query = result.Suggestion;
+        result.Suggestion ="";
+        RunQuery();
+    }
+
+}
