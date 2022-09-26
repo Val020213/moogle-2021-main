@@ -3,7 +3,7 @@ namespace MoogleEngine
     public class WordInfo
     {
         public string Word { get; private set; }
-        public int Frequency { get; private set; }
+        public int Frequency { get; set; }
         public List<int> Index { get; private set; }
         public double tf_idf_score { get; set; }
 

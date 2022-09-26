@@ -104,14 +104,14 @@ namespace MoogleEngine
             string[] Text = Doc.Text;
             int li = 0;
             (int, int) limits = (0, 0);
-            int best_score = 0;
-            int score = 0;
+            double best_score = 0;
+            double score = 0;
             snippet_length = (snippet_length > Text.Length) ? Text.Length : snippet_length;
 
             Dictionary<string, int> WordxFrequency = new Dictionary<string, int>();
             Dictionary<string, double> Importants_words = queryInfo.Important_operator;
 
-            foreach (string word in Query.Keys)
+            foreach (string word in Query.Components.Keys)
             {
                 if (!WordxFrequency.ContainsKey(word)) WordxFrequency.Add(word, 0);
             }

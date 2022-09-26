@@ -49,7 +49,7 @@ public static class Moogle
 
         for (int index = 0; index < lot_of_items; index++)//construccion del snippet
         {
-            string best_snippet = StringMethods.Search_BestSnippet(Result[index].Item1, query_vector, snippet_length);
+            string best_snippet = StringMethods.Search_BestSnippet(Result[index].Item1, query_vector, snippet_length, input);
             items[index] = new SearchItem(Result[index], best_snippet);
         }
 
