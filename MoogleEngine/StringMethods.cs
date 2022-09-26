@@ -6,37 +6,20 @@ namespace MoogleEngine
     {
         public static string[] Normalize_Text(string Text)
         {
+            List<string> Words = new List<string>();
             Text = Text.ToLower();
 
-            char[] specials_chars = {
-            '\n',' ',',' , '.' , '/' , '?' , '>' , '<' , ';' , ':' , '}' , ']',
-            '[' , '{' , '-' , '_' , '=' , '+' , ')' , '(' , '&',
-            '%' , '$' , '#' , '@' , '!' , '^' , '`' , (char)92 , (char)39, '~', '*'
-            };
-
-            string[] Text_proccesed = Text.Split(specials_chars, System.StringSplitOptions.RemoveEmptyEntries);
-
-            Text_proccesed = Normalize_words(Text_proccesed); //normalizar profundo
-
-            return Text_proccesed;
-        }
-        private static string[] Normalize_words(string[] words)
-        {
-            for (int i = 0; i < words.Length; i++)
+            for (int i = 0; i < Text.Length; i++)
             {
-                words[i] = Remove_rest(words[i]);
+                if (char.IsLetterOrDigit(Text[i]))
+                {
+                    (string, int) temp = get_nextWord(Text, i);
+                    i = temp.Item2;
+                    string word = temp.Item1;
+                    Words.Add(word);
+                }
             }
-            return words;
-        }
-
-        public static string Remove_rest(string word)
-        {
-            string correct = "";
-            for (int i = 0; i < word.Length; i++)
-            {
-                if (char.IsLetterOrDigit(word[i])) correct += word[i].ToString();
-            }
-            return correct;
+            return Words.ToArray();
         }
 
         public static string get_previousWord(string s, int pos)
@@ -44,10 +27,10 @@ namespace MoogleEngine
             string temp = "";
             while (pos >= 0 && s[pos] != ' ' && s[pos] != '~')
             {
-                temp += s[pos].ToString();
+                if (char.IsLetterOrDigit(s[pos])) temp += s[pos].ToString();
                 pos--;
             }
-            return StringMethods.Remove_rest(StringMethods.Reverse(temp));
+            return StringMethods.Reverse(temp);
         }
 
         public static (string, int) get_nextWord(string s, int pos)
@@ -55,10 +38,10 @@ namespace MoogleEngine
             string temp = "";
             while (pos < s.Length && s[pos] != ' ')
             {
-                temp += s[pos].ToString();
+                if (char.IsLetterOrDigit(s[pos])) temp += s[pos].ToString();
                 pos++;
             }
-            return (StringMethods.Remove_rest(temp), pos);
+            return (temp, pos);
         }
         public static string Reverse(string s)
         {

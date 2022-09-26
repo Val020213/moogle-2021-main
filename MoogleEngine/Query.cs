@@ -12,7 +12,7 @@ namespace MoogleEngine
         public Query(string search)
         {
             search = search.ToLower();
-
+            
             this.User_query = search;
             this.Words = StringMethods.Normalize_Text(search);
             this.Length = this.Words.Length;

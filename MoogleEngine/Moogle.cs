@@ -38,7 +38,6 @@ public static class Moogle
             score += OperatorsMethods.check_near(Doc, input.Near_operator, Base[Doc]);//operador cerania
             
             if (score != 0) Result.Add((Doc, score));//guardar los que contengan semejanza con la query
-
         }
 
         Result.Sort(Vector.Compare_Vectors);//organizar decrecientes, segun el valor del Cos
