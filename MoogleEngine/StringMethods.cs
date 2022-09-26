@@ -99,7 +99,7 @@ namespace MoogleEngine
             return DP[m, n];
         }
 
-        public static string Search_BestSnippet(Document Doc, Vector Query, int snippet_length)
+        public static string Search_BestSnippet(Document Doc, Vector Query, int snippet_length, Query queryInfo)
         {//subarray de snippet maximo
             string[] Text = Doc.Text;
             int li = 0;
@@ -108,9 +108,24 @@ namespace MoogleEngine
             int score = 0;
             snippet_length = (snippet_length > Text.Length) ? Text.Length : snippet_length;
 
+            Dictionary<string, int> WordxFrequency = new Dictionary<string, int>();
+            Dictionary<string, double> Importants_words = queryInfo.Important_operator;
+
+            foreach (string word in Query.Keys)
+            {
+                if (!WordxFrequency.ContainsKey(word)) WordxFrequency.Add(word, 0);
+            }
+
+
             for (int ls = 0; ls < Text.Length; ls++)
             {
-                if (Query.Components.ContainsKey(Text[ls])) { score++; }
+                if (Query.Components.ContainsKey(Text[ls]))
+                {
+                    WordxFrequency[Text[ls]]++;
+                    double limiter = WordxFrequency[Text[ls]];
+                    score += 1 / limiter;
+                    if (Importants_words.ContainsKey(Text[ls])) score += Importants_words[Text[ls]];
+                }
 
                 if (ls - li >= snippet_length)
                 {
@@ -120,7 +135,13 @@ namespace MoogleEngine
                         best_score = score;
                     }
 
-                    if (Query.Components.ContainsKey(Text[li])) score--;
+                    if (Query.Components.ContainsKey(Text[li]))
+                    {
+                        double limiter = WordxFrequency[Text[li]];
+                        WordxFrequency[Text[li]]--;
+                        score -= 1 / limiter;
+                        if (Importants_words.ContainsKey(Text[li])) score -= Importants_words[Text[li]];
+                    }
                     li++;
                 }
             }
@@ -131,10 +152,7 @@ namespace MoogleEngine
         static string makesnip(int li, int ls, string[] Text)
         {
             string snipp = "";
-            for (int i = li; i <= ls; i++)
-            {
-                snipp += Text[i] + " ";
-            }
+            for (int i = li; i <= ls; i++) snipp += Text[i] + " ";
             return snipp;
         }
 
@@ -183,58 +201,55 @@ namespace MoogleEngine
             }
             return;
         }
+        /*
         public static string SnippetBeta(Document Doc, Vector VQuery, Query input, int snippet_length)
         {
             snippet_length *= 4;//aproximacion a caracteres
-            string Text = File.ReadAllText(Doc.Doc_FileInfo.FullName);
+            string Text = File.ReadAllText(Doc.Doc_FileInfo.FullName);//texto del doc
+            snippet_length = Math.Min(snippet_length, Text.Length);//docs con poco texto
 
-            snippet_length = Math.Min(snippet_length, Text.Length);
+            int score = 0;
+            int best_score = -1;
 
-            string score = 0;
-            string best_score = -1;
-
+            List<(string, int)> Importants_words = new List<(string, int)>();//las que me interesan
+            int index_of_list = 0;//para saber por donde me quede
+            Dictionary<string, WordInfo> VSnippet = new Dictionary<string, double>();//vector para Similitud de cos
+            (int, int) limits = (0, 0);
             int li = 0;
-            Queue<string> Cola = new Queue<string>();//guardar las palabras escogidas
-            Dictionary<string, WordInfo> Snip_vector = new Dictionary<string, double>();
-
-            int palabras_pos = 0;
-            int palabras_neg = 0;
 
             //base
-            for (int i = 0; i < snippet_length; i++)
+            for (int i = 0; i < Text.Length; i++)
             {
-                bool Is_taken = false;
-
                 if (char.IsLetterOrDigit(Text[i]))
                 {
-                    string word = get_nextWord(Text, i);
-                    palabras_pos++;
+                    (string, int) temp = get_nextWord(Text, i);
 
-                    if (VQuery.Components.ContainsKey(word))
+                    i = temp.Item2;
+                    string word = temp.Item1;
+
+                    if (VQuery.ContainsKey(word))
                     {
-                        Cola.Enqueue(word);
-                        if (!Snip_vector.ContainsKey(word)) Snip_vector.Add(word, new WordInfo(word));
-                        Snip_vector[word].Add_index(0);
-                        Is_taken = true;
+                        Importants_words.Add(word, i);
+                        if (!VSnippet.ContainsKey(word)) VSnippet.Add(word, new WordInfo(word));
+                        VSnippet[word].Frequency++;
                     }
 
-                    if (i - li >= snippet_length && Is_taken)
+                    if (i - li >= snippet_length)
                     {
-                        string palabra_a_quitar = Cola.Peek();//garantizamos que la palabra esta en el dicc
+                        while (Importants_words[index_of_list].Item2 < li)
+                        {
+                            VSnippet[Importants_words[index_of_list].Item1].Frequency--;
+                            index_of_list++;
+                        }
 
-                        Snip_vector[palabra_a_quitar]--;
-                        palabras_neg--;
 
-                        Cola.Dequeue();
 
-                        score = Vector.Cos_Similarity(new Vector(Snip_vector), VQuery, input);
 
-                        if (score > best_score)
                     }
+
                 }
             }
-
-
         }
+        */
     }
 }
