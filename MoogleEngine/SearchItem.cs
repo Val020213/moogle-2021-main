@@ -3,7 +3,7 @@ public class SearchItem
 {
     public SearchItem((Document, double) obj, string best_snippet)
     {
-        this.Title = obj.Item1.get_Name;
+        this.Title = obj.Item1.Name;
         this.Snippet = best_snippet;
         this.Score = obj.Item2;
     }

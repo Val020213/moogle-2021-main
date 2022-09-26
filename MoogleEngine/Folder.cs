@@ -2,12 +2,9 @@ namespace MoogleEngine
 {
     public class Folder
     {
-        string Direction;
-        System.IO.DirectoryInfo Folder_DirectoryInfo;
+        public string Direction {get; private set;}
+        public System.IO.DirectoryInfo Folder_DirectoryInfo {get; private set;}
 
-        public string get_Direction { get { return Direction; } }
-        public System.IO.DirectoryInfo get_Folder_DirectoryInfo { get { return Folder_DirectoryInfo; } }
-        
         public Folder(bool current)//Dirrecion usual de la carpeta content
         {
             this.Direction = System.IO.Path.Join("..", "Content");

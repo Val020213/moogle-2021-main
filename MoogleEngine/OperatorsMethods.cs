@@ -42,7 +42,7 @@ namespace MoogleEngine
                 if (!Allwords.ContainsKey(word)) return 0;
                 if (!mask_index.ContainsKey(word)) mask_index.Add(word, 0);
 
-                foreach (int index in Allwords[word].get_Index)
+                foreach (int index in Allwords[word].Index)
                 {
                     Index_byWord.Add((index, word));
                 }

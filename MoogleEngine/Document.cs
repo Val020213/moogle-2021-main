@@ -2,17 +2,13 @@ namespace MoogleEngine
 {
     public class Document
     {
-        System.IO.FileInfo Doc_FileInfo;
-        string Name;
-        string[] Text;
-        int Length;
+        public System.IO.FileInfo Doc_FileInfo { get; private set; }
+        public string Name { get; private set; }
+        public string[] Text { get; private set; }
+        public int Length { get; private set; }
 
-        public System.IO.FileInfo get_Doc_FileInfo { get { return Doc_FileInfo; } }
-        public string get_Name { get { return Name; } }
-        public string[] get_Text { get { return Text; } }
-        public int get_Length { get { return Length; } }
-
-        public Document(string name, string[] text)//aqui el campo Docfileinfo es null, (solo se usa en psudo docs)
+        public Document(string name, string[] text)
+        //aqui el campo Docfileinfo es null, (solo se usa en psudo docs)
         {
             this.Name = name;
             this.Text = text;

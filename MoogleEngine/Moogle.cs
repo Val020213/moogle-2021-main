@@ -10,12 +10,12 @@ public static class Moogle
     public static Dictionary<string, int> Words_of_Base = new Dictionary<string, int>();
     public static void Preprocess()//Procesamiento del texto, calculo del tf*idf
     {
-        Folder Content = new Folder(true);
+        Folder Content = new Folder("/home/osvaldo/CC111/Proyecto/Contentsss/ContentMedium");
         Text_Files Content_text_files = new Text_Files(Content);
         TF_IDF Base_Stats = new TF_IDF(Content_text_files);
         
-        Words_of_Base = Base_Stats.get_IDF;
-        Base = Base_Stats.get_TFxIDF;
+        Words_of_Base = Base_Stats.IDF;
+        Base = Base_Stats.TFxIDF;
     }
     public static SearchResult Query(string query)
     {
@@ -24,18 +24,18 @@ public static class Moogle
 
         //Procesar la query
         Query input = new Query(query);
-        Document partial = new Document("query", input.get_Words);
+        Document partial = new Document("query", input.Words);
         TF_IDF query_stats = new TF_IDF(partial);
 
         //Modelo de Espacio Vectorial (producto punto)
-        Vector query_vector = new Vector(query_stats.get_TFxIDF[partial]);//vector query
+        Vector query_vector = new Vector(query_stats.TFxIDF[partial]);//vector query
         List<(Document, double)> Result = new List<(Document, double)>();//lista de resultados
 
         foreach (Document Doc in Base.Keys)//recorrido por todos los documentos para buscar la similitud
         {
             Vector Doc_vector = new Vector(Base[Doc]);
             double score = Vector.Cos_Similarity(Doc_vector, query_vector, input);//calculo del cos
-            score += OperatorsMethods.check_near(Doc, input.get_Near_operator, Base[Doc]);//operador cerania
+            score += OperatorsMethods.check_near(Doc, input.Near_operator, Base[Doc]);//operador cerania
             
             if (score != 0) Result.Add((Doc, score));//guardar los que contengan semejanza con la query
 
@@ -58,8 +58,8 @@ public static class Moogle
         Console.WriteLine(time_temp.ToString(@"m\:ss\.fff"));//resultado del cronometro
 
         //make suggestion
-        string suggestion = StringMethods.Get_best_suggestions(input.get_Words, Words_of_Base);
-        if (suggestion == input.get_User_query) suggestion = "";
+        string suggestion = StringMethods.Get_best_suggestions(input.Words, Words_of_Base);
+        if (suggestion == input.User_query) suggestion = "";
 
         return new SearchResult(items, suggestion);
     }
