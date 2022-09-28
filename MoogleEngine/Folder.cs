@@ -23,6 +23,5 @@ namespace MoogleEngine
             if (!this.Folder_DirectoryInfo.Exists)
                 throw new System.Exception($"LA CARPETA CONTENT NO SE ENCUENTRA EN LA DIRECCION {this.Direction}");
         }
-
     }
 }

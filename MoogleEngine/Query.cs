@@ -14,7 +14,7 @@ namespace MoogleEngine
             search = search.ToLower();
             
             this.User_query = search;
-            this.Words = StringMethods.Normalize_Text(search);
+            this.Words = StringMethods.Normalize_Text(search).Item1;
             this.Length = this.Words.Length;
 
             //operadores

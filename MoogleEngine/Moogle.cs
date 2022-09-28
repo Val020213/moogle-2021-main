@@ -11,9 +11,10 @@ public static class Moogle
     public static void Preprocess()//Procesamiento del texto, calculo del tf*idf
     {
         Folder Content = new Folder("/home/osvaldo/CC111/Proyecto/Contentsss/ContentMedium");
+        //path of Moogle Content System.IO.Path.Join("..", "Content");
         Text_Files Content_text_files = new Text_Files(Content);
         TF_IDF Base_Stats = new TF_IDF(Content_text_files);
-        
+
         Words_of_Base = Base_Stats.IDF;
         Base = Base_Stats.TFxIDF;
     }
@@ -36,7 +37,7 @@ public static class Moogle
             Vector Doc_vector = new Vector(Base[Doc]);
             double score = Vector.Cos_Similarity(Doc_vector, query_vector, input);//calculo del cos
             score += OperatorsMethods.check_near(Doc, input.Near_operator, Base[Doc]);//operador cerania
-            
+
             if (score != 0) Result.Add((Doc, score));//guardar los que contengan semejanza con la query
         }
 

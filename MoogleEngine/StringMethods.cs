@@ -4,9 +4,10 @@ namespace MoogleEngine
 {
     public class StringMethods //Metodos de normalizar, edit distance, snippet, sugerencias
     {
-        public static string[] Normalize_Text(string Text)
+        public static (string[], int[]) Normalize_Text(string Text)
         {
             List<string> Words = new List<string>();
+            List<int> Words_char_index = new List<int>();
             Text = Text.ToLower();
 
             for (int i = 0; i < Text.Length; i++)
@@ -15,13 +16,16 @@ namespace MoogleEngine
                 {
                     (string, int) temp = get_nextWord(Text, i);
                     i = temp.Item2;
-                    string word = temp.Item1;
-                    Words.Add(word);
+
+                    if (temp.Item1 != "")
+                    {
+                        Words.Add(temp.Item1);
+                        Words_char_index.Add(temp.Item2);
+                    }
                 }
             }
-            return Words.ToArray();
+            return (Words.ToArray(), Words_char_index.ToArray());
         }
-
         public static string get_previousWord(string s, int pos)
         {
             string temp = "";
@@ -32,11 +36,10 @@ namespace MoogleEngine
             }
             return StringMethods.Reverse(temp);
         }
-
         public static (string, int) get_nextWord(string s, int pos)
         {
             string temp = "";
-            while (pos < s.Length && s[pos] != ' ')
+            while (pos < s.Length && s[pos] != ' ' && s[pos] != '\n')
             {
                 if (char.IsLetterOrDigit(s[pos])) temp += s[pos].ToString();
                 pos++;
@@ -52,7 +55,6 @@ namespace MoogleEngine
             }
             return temp;
         }
-
         public static int editDistance(string word_A, string word_B)
         {
 
@@ -81,7 +83,6 @@ namespace MoogleEngine
             }
             return DP[m, n];
         }
-
         public static string Search_BestSnippet(Document Doc, Vector Query, int snippet_length, Query queryInfo)
         {//subarray de snippet maximo
             string[] Text = Doc.Text;
@@ -131,14 +132,12 @@ namespace MoogleEngine
 
             return makesnip(limits.Item1, limits.Item2, Text);
         }
-
         static string makesnip(int li, int ls, string[] Text)
         {
             string snipp = "";
             for (int i = li; i <= ls; i++) snipp += Text[i] + " ";
             return snipp;
         }
-
         public static string Search_suggestions(string miss_word, Dictionary<string, int> Allwords)
         {
             int min_diference = (miss_word.Length / 2 < 4) ? miss_word.Length + 1 : 4;
@@ -162,77 +161,15 @@ namespace MoogleEngine
 
             foreach (string word in query_words)
             {
-
                 if (!Allwords.ContainsKey(word))
                 {
                     string temp = Search_suggestions(word, Allwords);
                     if (temp != word) cont++;
                     best_suggestions.Add(temp);
                 }
-
                 else best_suggestions.Add(word);
             }
             return (cont == 0) ? "" : string.Join(' ', best_suggestions);
         }
-
-        //snippet en modo prueba
-        public static void Update_Components(Dictionary<string, WordInfo> tf_idf, int lot_of_words)
-        {
-            foreach (string word in tf_idf.Keys)
-            {
-                tf_idf[word].tf_idf_score = tf_idf[word].Frequency / lot_of_words;
-            }
-            return;
-        }
-        /*
-        public static string SnippetBeta(Document Doc, Vector VQuery, Query input, int snippet_length)
-        {
-            snippet_length *= 4;//aproximacion a caracteres
-            string Text = File.ReadAllText(Doc.Doc_FileInfo.FullName);//texto del doc
-            snippet_length = Math.Min(snippet_length, Text.Length);//docs con poco texto
-
-            int score = 0;
-            int best_score = -1;
-
-            List<(string, int)> Importants_words = new List<(string, int)>();//las que me interesan
-            int index_of_list = 0;//para saber por donde me quede
-            Dictionary<string, WordInfo> VSnippet = new Dictionary<string, double>();//vector para Similitud de cos
-            (int, int) limits = (0, 0);
-            int li = 0;
-
-            //base
-            for (int i = 0; i < Text.Length; i++)
-            {
-                if (char.IsLetterOrDigit(Text[i]))
-                {
-                    (string, int) temp = get_nextWord(Text, i);
-
-                    i = temp.Item2;
-                    string word = temp.Item1;
-
-                    if (VQuery.ContainsKey(word))
-                    {
-                        Importants_words.Add(word, i);
-                        if (!VSnippet.ContainsKey(word)) VSnippet.Add(word, new WordInfo(word));
-                        VSnippet[word].Frequency++;
-                    }
-
-                    if (i - li >= snippet_length)
-                    {
-                        while (Importants_words[index_of_list].Item2 < li)
-                        {
-                            VSnippet[Importants_words[index_of_list].Item1].Frequency--;
-                            index_of_list++;
-                        }
-
-
-
-
-                    }
-
-                }
-            }
-        }
-        */
     }
 }
