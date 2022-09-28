@@ -20,7 +20,7 @@ namespace MoogleEngine
                     if (temp.Item1 != "")
                     {
                         Words.Add(temp.Item1);
-                        Words_char_index.Add(temp.Item2);
+                        Words_char_index.Add(temp.Item2 - 1);
                     }
                 }
             }
@@ -84,23 +84,25 @@ namespace MoogleEngine
             return DP[m, n];
         }
         public static string Search_BestSnippet(Document Doc, Vector Query, int snippet_length, Query queryInfo)
-        {//subarray de snippet maximo
+        {
+            //subarray de snippet maximo
             string[] Text = Doc.Text;
+            if (snippet_length > Text.Length) return File.ReadAllText(Doc.Doc_FileInfo.FullName);//caso base
+
+            int[] Words_index = Doc.Text_words_index;
+
             int li = 0;
             (int, int) limits = (0, 0);
             double best_score = 0;
             double score = 0;
-            snippet_length = (snippet_length > Text.Length) ? Text.Length : snippet_length;
 
-            Dictionary<string, int> WordxFrequency = new Dictionary<string, int>();
+            Dictionary<string, int> WordxFrequency = new Dictionary<string, int>();//limitador de palabras iguales en el score
             Dictionary<string, double> Importants_words = queryInfo.Important_operator;
 
-            foreach (string word in Query.Components.Keys)
-            {
-                if (!WordxFrequency.ContainsKey(word)) WordxFrequency.Add(word, 0);
-            }
+            //rellenar el limitador
+            foreach (string word in Query.Components.Keys) if (!WordxFrequency.ContainsKey(word)) WordxFrequency.Add(word, 0);
 
-
+            //buscar el mejor snippet
             for (int ls = 0; ls < Text.Length; ls++)
             {
                 if (Query.Components.ContainsKey(Text[ls]))
@@ -130,14 +132,12 @@ namespace MoogleEngine
                 }
             }
 
-            return makesnip(limits.Item1, limits.Item2, Text);
+            int start = Words_index[limits.Item1] - Text[limits.Item1].Length + 1;
+            int lenght = Words_index[limits.Item2] - start;
+
+            return (File.ReadAllText(Doc.Doc_FileInfo.FullName).Substring(start, lenght));
         }
-        static string makesnip(int li, int ls, string[] Text)
-        {
-            string snipp = "";
-            for (int i = li; i <= ls; i++) snipp += Text[i] + " ";
-            return snipp;
-        }
+
         public static string Search_suggestions(string miss_word, Dictionary<string, int> Allwords)
         {
             int min_diference = (miss_word.Length / 2 < 4) ? miss_word.Length + 1 : 4;
