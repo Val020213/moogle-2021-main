@@ -21,7 +21,9 @@ public static class Moogle
     public static SearchResult Query(string query)
     {
         var time = new Stopwatch();//cronometro
+        var time2 = new Stopwatch();//cronometro
         time.Start();
+        time2.Start();
 
         //Procesar la query
         Query input = new Query(query);
@@ -60,6 +62,10 @@ public static class Moogle
         //make suggestion
         string suggestion = StringMethods.Get_best_suggestions(input.Words, Words_of_Base);
         if (suggestion == input.User_query) suggestion = "";
+
+        time2.Stop();
+        TimeSpan time_temp2 = time2.Elapsed;
+        Console.WriteLine(time_temp2.ToString(@"m\:ss\.fff"));//resultado del cronometro
 
         return new SearchResult(items, suggestion);
     }
