@@ -16,6 +16,7 @@
 @if (!string.IsNullOrEmpty(result.Suggestion)) {
     <div class="suggestion">
         <p>¿Quisiste decir <strong><a href="#" @onclick="FixQuery"> @result.Suggestion</a></strong>?</p>
+        <p>Se encontraron <i>@result.Count()</i>, timpo de búsqueda: <i>@result.Time</i></p> 
     </div>
 }
 
