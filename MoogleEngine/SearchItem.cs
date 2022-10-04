@@ -6,11 +6,7 @@ public class SearchItem
         this.Title = obj.Item1.Name;
         this.Snippet = best_snippet;
         this.Score = obj.Item2;
-        string tester = obj.Item1.Doc_FileInfo.FullName;
-        string resp = "file:///";
-        for(int i = 1 ; i < tester.Length; i++)resp+=tester[i];
-        this.Direction = resp;
-
+        this.Direction = "file//"+  obj.Item1.Doc_FileInfo.FullName;//esta funcionabilidad esta en processo
     }
 
     public string Title { get; private set; }

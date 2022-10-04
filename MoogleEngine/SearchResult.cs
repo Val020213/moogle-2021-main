@@ -3,10 +3,9 @@ namespace MoogleEngine;
 public class SearchResult
 {
     private SearchItem[] items;
-    public string Time { get; private set; }
     public string Suggestion { get; private set; }
 
-    public SearchResult(SearchItem[] items, string suggestion = "", string time)
+    public SearchResult(SearchItem[] items, string suggestion = "")
     {
         if (items == null)
         {
@@ -14,10 +13,8 @@ public class SearchResult
         }
 
         this.items = items;
-        this.Time = time;
         this.Suggestion = suggestion;
     }
-
     public SearchResult() : this(new SearchItem[0])
     {
 
@@ -30,6 +27,5 @@ public class SearchResult
     {
         return this.items;
     }
-
     public int Count { get { return this.items.Length; } }
 }

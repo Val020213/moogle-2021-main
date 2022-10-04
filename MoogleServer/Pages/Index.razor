@@ -16,7 +16,13 @@
 @if (!string.IsNullOrEmpty(result.Suggestion)) {
     <div class="suggestion">
         <p>¿Quisiste decir <strong><a href="#" @onclick="FixQuery"> @result.Suggestion</a></strong>?</p>
-        <p>Se encontraron <i>@result.Count()</i>, timpo de búsqueda: <i>@result.Time</i></p> 
+        <p>Se encontraron <i>@result.Count</i>, timpo de búsqueda: <i>@Moogle.Time</i></p> 
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(query)) {
+    <div class="suggestion">
+        <p>Se encontraron <i>@result.Count</i> resultados, Tiempo de Búsqueda: <i>@Moogle.Time</i></p> 
     </div>
 }
 
@@ -48,7 +54,7 @@
     private void FixQuery()
     {
         query = result.Suggestion;
-        result.Suggestion ="";
+        result.Reset_Query_Suggestion();
         RunQuery();
     }
 

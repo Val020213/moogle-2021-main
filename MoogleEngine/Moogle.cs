@@ -8,6 +8,7 @@ public static class Moogle
 {
     public static Dictionary<Document, Dictionary<string, WordInfo>> Base = new Dictionary<Document, Dictionary<string, WordInfo>>();
     public static Dictionary<string, int> Words_of_Base = new Dictionary<string, int>();
+    public static string Time;
     public static void Preprocess()//Procesamiento del texto, calculo del tf*idf
     {
         Folder Content = new Folder("/home/osvaldo/CC111/Proyecto/Contentsss/ContentMedium");
@@ -59,7 +60,8 @@ public static class Moogle
 
         time.Stop();
         TimeSpan time_temp = time.Elapsed;//resultado del cronometro
+        Time = time_temp.ToString(@"m\:ss\.fff");
 
-        return new SearchResult(items, suggestion, time_temp.ToString(@"m\:ss\.fff" ));
+        return new SearchResult(items, suggestion);
     }
 }

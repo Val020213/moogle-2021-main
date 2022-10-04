@@ -137,7 +137,7 @@ namespace MoogleEngine
 
             return (File.ReadAllText(Doc.Doc_FileInfo.FullName).Substring(start, lenght));
         }
-
+        
         public static string Search_suggestions(string miss_word, Dictionary<string, int> Allwords)
         {
             int min_diference = (miss_word.Length / 2 < 4) ? miss_word.Length + 1 : 4;

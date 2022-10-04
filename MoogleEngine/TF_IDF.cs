@@ -59,7 +59,7 @@ namespace MoogleEngine
             }
             return temp;
         }
-
+        
         void Calcule_tf_idf(Dictionary<string, WordInfo> temp, double doc_quantity, double words_quantity)
         {
             foreach (string words in temp.Keys)
