@@ -24,6 +24,7 @@
     <li>
         <div class="item">
             <p class="title">@item.Title</p>
+            <a href ="@item.Direction" >@item.Direction</a>
             <p>... @item.Snippet ...</p>
         </div>
     </li>
@@ -31,6 +32,7 @@
 </ul>
 
 @code {
+
     private string query = "";
     private SearchResult result = new SearchResult();
 

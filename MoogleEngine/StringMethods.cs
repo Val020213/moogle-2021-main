@@ -133,7 +133,7 @@ namespace MoogleEngine
             }
 
             int start = Words_index[limits.Item1] - Text[limits.Item1].Length + 1;
-            int lenght = Words_index[limits.Item2] - start;
+            int lenght = Words_index[limits.Item2] - start + 1;
 
             return (File.ReadAllText(Doc.Doc_FileInfo.FullName).Substring(start, lenght));
         }
