@@ -21,9 +21,7 @@ public static class Moogle
     public static SearchResult Query(string query)
     {
         var time = new Stopwatch();//cronometro
-        var time2 = new Stopwatch();//cronometro
         time.Start();
-        time2.Start();
 
         //Procesar la query
         Query input = new Query(query);
@@ -55,18 +53,13 @@ public static class Moogle
             items[index] = new SearchItem(Result[index], best_snippet);
         }
 
-        time.Stop();
-        TimeSpan time_temp = time.Elapsed;
-        Console.WriteLine(time_temp.ToString(@"m\:ss\.fff"));//resultado del cronometro
-
         //make suggestion
         string suggestion = StringMethods.Get_best_suggestions(input.Words, Words_of_Base);
         if (suggestion == input.User_query) suggestion = "";
 
-        time2.Stop();
-        TimeSpan time_temp2 = time2.Elapsed;
-        Console.WriteLine(time_temp2.ToString(@"m\:ss\.fff"));//resultado del cronometro
+        time.Stop();
+        TimeSpan time_temp = time.Elapsed;//resultado del cronometro
 
-        return new SearchResult(items, suggestion);
+        return new SearchResult(items, suggestion, time_temp.ToString(@"m\:ss\.fff" ));
     }
 }

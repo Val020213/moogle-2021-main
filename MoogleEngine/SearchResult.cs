@@ -3,24 +3,31 @@ namespace MoogleEngine;
 public class SearchResult
 {
     private SearchItem[] items;
+    public string Time { get; private set; }
+    public string Suggestion { get; private set; }
 
-    public SearchResult(SearchItem[] items, string suggestion="")
+    public SearchResult(SearchItem[] items, string suggestion = "", string time)
     {
-        if (items == null) {
+        if (items == null)
+        {
             throw new ArgumentNullException("items");
         }
 
         this.items = items;
+        this.Time = time;
         this.Suggestion = suggestion;
     }
 
-    public SearchResult() : this(new SearchItem[0]) {
+    public SearchResult() : this(new SearchItem[0])
+    {
 
     }
-
-    public string Suggestion { get; set; }
-
-    public IEnumerable<SearchItem> Items() {
+    public void Reset_Query_Suggestion()
+    {
+        this.Suggestion = "";
+    }
+    public IEnumerable<SearchItem> Items()
+    {
         return this.items;
     }
 
