@@ -5,7 +5,7 @@
 >   Osvaldo R. Moreno P. C111. Proyecto de Programación I. Facultad de Matemática y Computación. Universidad de La Habana. Curso 2022. 
 
 # Actualizaciones del Moogle!!!
- ** hola de vuelta ...** traemos actualizaciones!, que **no Sabes qué es Moogle!?**, no te preocupes
+ **Hola de vuelta...** traemos actualizaciones!, que **no Sabes qué es Moogle!?**, no te preocupes
  puedes leer sobre Moogle [aqui](ReadmeMoogleInfo.md).
 
 
