@@ -14,8 +14,8 @@ namespace MoogleEngine
             this.TFxIDF.Add(query_doc, new Dictionary<string, WordInfo>());
             this.IDF = new Dictionary<string, int>();//para que sea reutilizables las funciones
 
-            this.TFxIDF[query_doc] = tf_4doc(query_doc);
-            Calcule_tf_idf(this.TFxIDF[query_doc], 1, (double)query_doc.Length);
+            this.TFxIDF[query_doc] = TF_forDocument(query_doc);
+            Calcule_TF_IDF_value(this.TFxIDF[query_doc], 1, (double)query_doc.Length);
         }
 
         public TF_IDF(Text_Files Documents)
@@ -27,7 +27,7 @@ namespace MoogleEngine
             foreach (FileInfo text_file in Documents.AllFiles)
             {
                 Document doc = new Document(text_file);
-                this.TFxIDF[doc] = tf_4doc(doc);
+                this.TFxIDF[doc] = TF_forDocument(doc);
             }
 
             //calculo del tf_idf de cada palabra en el documento
@@ -35,11 +35,11 @@ namespace MoogleEngine
 
             foreach (Document Doc in this.TFxIDF.Keys)
             {
-                Calcule_tf_idf(this.TFxIDF[Doc], doc_quantity, Doc.Length);
+                Calcule_TF_IDF_value(this.TFxIDF[Doc], doc_quantity, Doc.Length);
             }
         }
 
-        Dictionary<string, WordInfo> tf_4doc(Document Doc)//tf idf para un documento
+        Dictionary<string, WordInfo> TF_forDocument(Document Doc)//tf idf para un documento
         {
             Dictionary<string, WordInfo> temp = new Dictionary<string, WordInfo>();
 
@@ -60,7 +60,7 @@ namespace MoogleEngine
             return temp;
         }
         
-        void Calcule_tf_idf(Dictionary<string, WordInfo> temp, double doc_quantity, double words_quantity)
+        void Calcule_TF_IDF_value(Dictionary<string, WordInfo> temp, double doc_quantity, double words_quantity)
         {
             foreach (string words in temp.Keys)
             {

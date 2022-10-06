@@ -2,7 +2,8 @@ using System;
 using System.IO;
 namespace MoogleEngine
 {
-    public class StringMethods //Metodos de normalizar, edit distance, snippet, sugerencias
+    //Metodos de normalizar, edit distance, snippet, sugerencias
+    public class StringMethods
     {
         public static (string[], int[]) Normalize_Text(string Text)
         {
@@ -14,7 +15,7 @@ namespace MoogleEngine
             {
                 if (char.IsLetterOrDigit(Text[i]))
                 {
-                    (string, int) temp = get_nextWord(Text, i);
+                    (string, int) temp = Next_Word(Text, i);
                     i = temp.Item2;
 
                     if (temp.Item1 != "")
@@ -26,20 +27,20 @@ namespace MoogleEngine
             }
             return (Words.ToArray(), Words_char_index.ToArray());
         }
-        public static string get_previousWord(string s, int pos)
+        public static string Previous_Word(string s, int pos)
         {
             string temp = "";
-            while (pos >= 0 && s[pos] != ' ' && s[pos] != '~')
+            while (pos >= 0 && !Is_limiter(s[pos]))
             {
                 if (char.IsLetterOrDigit(s[pos])) temp += s[pos].ToString();
                 pos--;
             }
             return StringMethods.Reverse(temp);
         }
-        public static (string, int) get_nextWord(string s, int pos)
+        public static (string, int) Next_Word(string s, int pos)
         {
             string temp = "";
-            while (pos < s.Length && s[pos] != ' ' && s[pos] != '\n' && s[pos] != '*' && s[pos] != '~')
+            while (pos < s.Length && !Is_limiter(s[pos]))
             {
                 if (char.IsLetterOrDigit(s[pos])) temp += s[pos].ToString();
                 pos++;
@@ -137,7 +138,7 @@ namespace MoogleEngine
 
             return (File.ReadAllText(Doc.Doc_FileInfo.FullName).Substring(start, lenght));
         }
-
+        public static bool Is_limiter(char c) => (c == '~' || c == '*' || c == ' ' || c == '!' || c == '^' || c == '\n');
         public static string Search_suggestions(string miss_word, Dictionary<string, int> Allwords)
         {
             int min_diference = (miss_word.Length / 2 < 4) ? miss_word.Length + 1 : 4;

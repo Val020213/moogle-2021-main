@@ -29,15 +29,15 @@ namespace MoogleEngine
         (List<string>, int) Nearby_ring(string s, int pos)
         {
             List<string> words = new List<string>();
-            words.Add(StringMethods.get_previousWord(s, pos - 1));
+            words.Add(StringMethods.Previous_Word(s, pos - 1));
             pos++;
 
             while (pos < s.Length && s[pos] != ' ')
             {
-                if (s[pos] == '~') words.Add(StringMethods.get_previousWord(s, pos - 1));
+                if (s[pos] == '~') words.Add(StringMethods.Previous_Word(s, pos - 1));
                 pos++;
             }
-            words.Add(StringMethods.get_previousWord(s, pos - 1));
+            words.Add(StringMethods.Previous_Word(s, pos - 1));
             return (words, pos);
         }
         void check_operators(string query)
@@ -53,7 +53,7 @@ namespace MoogleEngine
                         i++;
                     }
 
-                    (string, int) temp = StringMethods.get_nextWord(query, i);
+                    (string, int) temp = StringMethods.Next_Word(query, i);
                     Important_operator.Add(temp.Item1, score);
                     i = temp.Item2;
                     continue;
@@ -61,7 +61,7 @@ namespace MoogleEngine
 
                 else if (query[i] == '!')
                 {
-                    (string, int) temp = StringMethods.get_nextWord(query, i + 1);
+                    (string, int) temp = StringMethods.Next_Word(query, i + 1);
                     Mustnotbe_operator.Add(temp.Item1, true);
                     i = temp.Item2;
                     continue;
@@ -69,7 +69,7 @@ namespace MoogleEngine
 
                 else if (query[i] == '^')
                 {
-                    (string, int) temp = StringMethods.get_nextWord(query, i + 1);
+                    (string, int) temp = StringMethods.Next_Word(query, i + 1);
                     Mustbe_operator.Add(temp.Item1, true);
                     i = temp.Item2;
                     continue;
