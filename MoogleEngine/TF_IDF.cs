@@ -47,6 +47,7 @@ namespace MoogleEngine
 
             foreach (string word in Doc.Text)
             {
+                Console.WriteLine(word);
                 if (!temp.ContainsKey(word))
                 {
                     temp.Add(word, new WordInfo(word));
