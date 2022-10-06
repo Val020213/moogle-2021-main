@@ -39,7 +39,7 @@ namespace MoogleEngine
         public static (string, int) get_nextWord(string s, int pos)
         {
             string temp = "";
-            while (pos < s.Length && s[pos] != ' ' && s[pos] != '\n')
+            while (pos < s.Length && s[pos] != ' ' && s[pos] != '\n' && s[pos] != '*' && s[pos] != '~')
             {
                 if (char.IsLetterOrDigit(s[pos])) temp += s[pos].ToString();
                 pos++;
@@ -137,7 +137,7 @@ namespace MoogleEngine
 
             return (File.ReadAllText(Doc.Doc_FileInfo.FullName).Substring(start, lenght));
         }
-        
+
         public static string Search_suggestions(string miss_word, Dictionary<string, int> Allwords)
         {
             int min_diference = (miss_word.Length / 2 < 4) ? miss_word.Length + 1 : 4;
