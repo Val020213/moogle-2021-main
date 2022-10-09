@@ -15,8 +15,8 @@ namespace MoogleEngine
         public static double Cos_Similarity(Vector Doc, Vector VQuery, Query queryInfo)
         {//Cos con el calculo del producto punto, y verificar las condiciones
 
-            Dictionary<string, bool> Must_be = queryInfo.Mustbe_operator;
-            Dictionary<string, bool> Must_not = queryInfo.Mustnotbe_operator;
+            HashSet<string> Must_be = queryInfo.Mustbe_operator;
+            HashSet<string> Must_not = queryInfo.Mustnotbe_operator;
             Dictionary<string, double> Important = queryInfo.Important_operator;
 
             double Dot_Product = 0;
@@ -36,8 +36,8 @@ namespace MoogleEngine
                 if (Doc.Components.ContainsKey(Component))//componentes comunes a la query
                 {
                     if (Important.ContainsKey(Component)) Score += Important[Component];
-                    if (Must_not.ContainsKey(Component)) return 0;//requisitos
-                    if (Must_be.ContainsKey(Component)) cont_must_be++;
+                    if (Must_not.Contains(Component)) return 0;//requisitos
+                    if (Must_be.Contains(Component)) cont_must_be++;
 
                     score_doc = Doc.Components[Component].tf_idf_score;
                     Dot_Product += (score_doc * score_query);

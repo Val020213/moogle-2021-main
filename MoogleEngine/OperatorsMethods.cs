@@ -4,24 +4,7 @@ namespace MoogleEngine
 {
     public class OperatorsMethods // Metodos relacionados con los operadores
     {
-        public static bool check_Must_be(Document Doc, List<string> Words, Dictionary<string, WordInfo> Allwords)
-        {
-            foreach (string word in Words)
-            {
-                if (Allwords.ContainsKey(word)) return true;
-            }
-            return false;
-        }
-        public static double check_important(Document Doc, List<(string, double)> Words, Dictionary<string, WordInfo> Allwords)
-        {
-            double plus = 0;
-            foreach ((string, double) word in Words)
-            {
-                if (Allwords.ContainsKey(word.Item1)) plus += word.Item2;
-            }
-            return plus;
-        }
-
+        //los operados mustbe y mustnotbe se comprueban en la similaridad de cos directamente
         public static int IndexOrder((int, string) A, (int, string) B) => A.Item1.CompareTo(B.Item1);
         public static double check_near(Document Doc, List<List<string>> NearsWords, Dictionary<string, WordInfo> Allwords)
         {

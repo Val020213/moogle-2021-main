@@ -43,7 +43,8 @@ public static class Moogle
 
         Result.Sort(Vector.Compare_Vectors);//organizar decrecientes, segun el valor del Cos
 
-        int lot_of_items = Math.Min(50, Result.Count);//cantidad de resultados a mostrar
+        //int lot_of_items = Math.Min(50, Result.Count);//cantidad de resultados a mostrar
+        int lot_of_items = Result.Count;
         int snippet_length = 100;//cantidad de palabras del snippet
         SearchItem[] items = new SearchItem[lot_of_items];
 
