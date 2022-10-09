@@ -12,7 +12,7 @@ public static class Moogle
     public static void Preprocess()//Procesamiento del texto, calculo del tf*idf
     {
         Folder Content = new Folder("/home/osvaldo/CC111/Proyecto/Contentsss/ContentMedium");
-        //path of Moogle Content System.IO.Path.Join("..", "Content");
+        //Folder Content = new Folder(System.IO.Path.Join("..", "Content"));
         Text_Files Content_text_files = new Text_Files(Content);
         TF_IDF Base_Stats = new TF_IDF(Content_text_files);
 

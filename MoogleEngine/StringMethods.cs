@@ -56,6 +56,21 @@ namespace MoogleEngine
             }
             return temp;
         }
+        public static (bool, int) Is_concatenation(string s, int pos)
+        {
+            pos = Search_Index_NextWord(s, pos);
+            return (pos < s.Length && s[pos] == '~') ? (true, pos) : (false, pos);
+        }
+        public static int Search_Index_NextWord(string s, int pos)
+        {
+            while (pos < s.Length && s[pos + 1] == ' ') pos++;
+            return pos + 1;
+        }
+        public static int Search_Index_PreviousWord(string s, int pos)
+        {
+            while (pos >= 0 && s[pos - 1] == ' ') pos--;
+            return pos - 1;
+        }
         public static int editDistance(string word_A, string word_B)
         {
 
@@ -88,7 +103,7 @@ namespace MoogleEngine
         {
             //subarray de snippet maximo
             string[] Text = Doc.Text;
-            if (snippet_length > Text.Length) return File.ReadAllText(Doc.Doc_FileInfo.FullName);//caso base
+            if (snippet_length > Text.Length) return Doc.Orignal_Text;//caso base
 
             int[] Words_index = Doc.Text_words_index;
 
@@ -136,7 +151,7 @@ namespace MoogleEngine
             int start = Words_index[limits.Item1] - Text[limits.Item1].Length + 1;
             int lenght = Words_index[limits.Item2] - start + 1;
 
-            return (File.ReadAllText(Doc.Doc_FileInfo.FullName).Substring(start, lenght));
+            return Doc.Orignal_Text.Substring(start, lenght);
         }
         public static bool Is_limiter(char c) => (c == '~' || c == '*' || c == ' ' || c == '!' || c == '^' || c == '\n');
         public static string Search_suggestions(string miss_word, Dictionary<string, int> Allwords)
